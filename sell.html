@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Bike - BikeBecho.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS to hide the message initially and style the error */
+        .message-box {
+            display: none; /* Hidden by default */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Register Your Bike to Sell</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="list.html">View Listed Bikes</a></li>
+                <li><a href="sell.html">Sell Your Bike</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="form-content">
+            <h2>Fill in the details to list your bike on BikeBecho.com</h2>
+            
+            <form id="sellBikeForm" action="#" method="POST">
+                
+                <label for="make">Bike Make (e.g., Bajaj, Honda, RE):</label>
+                <input type="text" id="make" name="make" required>
+                
+                <label for="model">Bike Model:</label>
+                <input type="text" id="model" name="model" required>
+                
+                <label for="year">Manufacturing Year:</label>
+                <input type="number" id="year" name="year" min="1990" max="2025" required>
+                
+                <label for="mileage">Total Mileage (in km):</label>
+                <input type="number" id="mileage" name="mileage" min="0" required>
+                
+                <label for="price">Expected Selling Price (₹):</label>
+                <input type="number" id="price" name="price" min="1" required>
+                
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Briefly describe the condition and features of your bike." required></textarea>
+                
+                <label for="location">City/Location:</label>
+                <input type="text" id="location" name="location" required>
+                
+                <input type="submit" value="List My Bike Now">
+            </form>
+            
+            <div id="formMessage" class="message-box success-message">
+                </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 BikeBecho.com. Ride Safe.</p>
+    </footer>
+
+    <script>
+        document.getElementById('sellBikeForm').addEventListener('submit', function(event) {
+            // 1. Prevent the default form submission (page reload)
+            event.preventDefault();
+
+            // Get form elements
+            const form = event.target;
+            const messageBox = document.getElementById('formMessage');
+            
+            // Assume validation is successful unless an error is found
+            let isValid = true;
+            let errorMessage = '';
+
+            // 2. Validate Numeric Fields
+            const year = parseInt(document.getElementById('year').value);
+            const mileage = parseInt(document.getElementById('mileage').value);
+            const price = parseInt(document.getElementById('price').value);
+
+            if (year < 1990 || year > 2025) {
+                isValid = false;
+                errorMessage = 'Please enter a valid Manufacturing Year (1990-2025).';
+            } else if (mileage < 0) {
+                isValid = false;
+                errorMessage = 'Mileage cannot be negative.';
+            } else if (price < 1000) {
+                isValid = false;
+                errorMessage = 'Selling Price must be at least ₹1,000.';
+            }
+
+            // 3. Display the result
+            if (isValid) {
+                // Success Scenario
+                messageBox.classList.remove('error-message');
+                messageBox.classList.add('success-message');
+                messageBox.innerHTML = `
+                    ✅ **Bike Successfully Registered!**<br>
+                    Thank you for listing your **${form.model.value}**.<br>
+                    *In a real website, this data would now be saved to a database.*
+                `;
+                messageBox.style.display = 'block';
+                form.reset(); // Clear the form fields
+            } else {
+                // Error Scenario
+                messageBox.classList.remove('success-message');
+                messageBox.classList.add('error-message');
+                messageBox.innerHTML = `❌ **Validation Error:** ${errorMessage}`;
+                messageBox.style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>
